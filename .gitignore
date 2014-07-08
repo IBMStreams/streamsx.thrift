@@ -1,6 +1,7 @@
 # project specific excludes
-com.ibm.streamsx.thrift/doc/
+com.ibm.streamsx.thrift/doc
 com.ibm.streamsx.thrift/impl/include/boost
+com.ibm.streamsx.thrift/samples
 
 samples/*/output
 samples/*/toolkit.xml
