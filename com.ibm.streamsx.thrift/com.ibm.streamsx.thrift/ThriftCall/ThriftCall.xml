@@ -20,7 +20,9 @@ The generated thrift function is always two-way.
           <cmn:managedLibrary>
             <cmn:lib>thrift</cmn:lib>
             <cmn:lib>StreamsThrift</cmn:lib>
+            <cmn:libPath>../../impl/lib</cmn:libPath>
             <cmn:libPath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext/lib</cmn:libPath>
+            <cmn:includePath>../../impl/include</cmn:includePath>
             <cmn:includePath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext</cmn:includePath>
             <cmn:command>../../impl/bin/thrift_toolkit_path.sh</cmn:command>
           </cmn:managedLibrary>

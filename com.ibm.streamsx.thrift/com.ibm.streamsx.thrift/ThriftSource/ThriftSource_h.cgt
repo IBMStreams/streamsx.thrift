@@ -29,8 +29,6 @@
 
 <%SPL::CodeGen::headerPrologue($model, \@includes);%>
 
-namespace boost = streams_boost;
-
 using namespace ::apache::thrift;
 using namespace ::apache::thrift::protocol;
 using namespace ::apache::thrift::transport;

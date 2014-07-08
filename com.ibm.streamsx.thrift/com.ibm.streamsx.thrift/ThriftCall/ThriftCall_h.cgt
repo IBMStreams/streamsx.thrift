@@ -12,11 +12,11 @@
 
     my @includes;
     push @includes, "#include <iostream>";
-    push @includes, "#include <boost/shared_ptr.hpp>";
     push @includes, "#include <streams_boost/asio.hpp>";
     push @includes, "#include <streams_boost/bind.hpp>";
     push @includes, "#include <streams_boost/date_time.hpp>";
     push @includes, "#include <streams_boost/ref.hpp>";
+    push @includes, "#include <streams_boost/shared_ptr.hpp>";
     push @includes, "#include <streams_boost/thread.hpp>";
     push @includes, "#include \"$class/include/$class.h\"";
     push @includes, "#include <thrift/protocol/TBinaryProtocol.h>";
@@ -36,7 +36,7 @@ using namespace ::com::ibm::streamsx::thrift;
 using namespace SPL::Functions::String;
 
 using std::string;
-using boost::shared_ptr;
+using streams_boost::shared_ptr;
 
 class MY_OPERATOR : public MY_BASE_OPERATOR {
 public:

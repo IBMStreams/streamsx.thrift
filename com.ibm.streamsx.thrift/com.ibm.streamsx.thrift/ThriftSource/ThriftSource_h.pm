@@ -38,8 +38,6 @@ sub main::generate($$) {
    SPL::CodeGen::headerPrologue($model, \@includes);
    print "\n";
    print "\n";
-   print 'namespace boost = streams_boost;', "\n";
-   print "\n";
    print 'using namespace ::apache::thrift;', "\n";
    print 'using namespace ::apache::thrift::protocol;', "\n";
    print 'using namespace ::apache::thrift::transport;', "\n";
