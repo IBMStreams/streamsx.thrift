@@ -1,0 +1,17 @@
+# project specific excludes
+com.ibm.streamsx.thrift/doc/
+
+samples/*/output
+samples/*/toolkit.xml
+/samples/*/doc
+
+# begin streamsx.thrift excluded
+.settings
+.toolkitList
+.namespace
+
+## C++ excludes
+# Compiled Object files
+*.slo
+*.lo
+*.o
