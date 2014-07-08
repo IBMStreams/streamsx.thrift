@@ -4,5 +4,5 @@ This toolkit provides [thrift](http://thrift.apache.org) server and client funct
 Web page with SPLDoc for operators and samples: [streamsx.thrift SPLDOC](http://ibmstreams.github.io/streamsx.thrift).
 
 Setup
-=====
+-----
 The toolkit needs write permissions for SPL developer.
