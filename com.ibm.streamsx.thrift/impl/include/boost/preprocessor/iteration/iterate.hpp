@@ -1,0 +1,82 @@
+# /* **************************************************************************
+#  *                                                                          *
+#  *     (C) Copyright Paul Mensonides 2002.
+#  *     Distributed under the Boost Software License, Version 1.0. (See
+#  *     accompanying file LICENSE_1_0.txt or copy at
+#  *     http://www.streams_boost.org/LICENSE_1_0.txt)
+#  *                                                                          *
+#  ************************************************************************** */
+#
+# /* See http://www.streams_boost.org for most recent version. */
+#
+# ifndef STREAMS_BOOST_PREPROCESSOR_ITERATION_ITERATE_HPP
+# define STREAMS_BOOST_PREPROCESSOR_ITERATION_ITERATE_HPP
+#
+# include <streams_boost/preprocessor/arithmetic/dec.hpp>
+# include <streams_boost/preprocessor/arithmetic/inc.hpp>
+# include <streams_boost/preprocessor/array/elem.hpp>
+# include <streams_boost/preprocessor/array/size.hpp>
+# include <streams_boost/preprocessor/cat.hpp>
+# include <streams_boost/preprocessor/slot/slot.hpp>
+# include <streams_boost/preprocessor/tuple/elem.hpp>
+#
+# /* STREAMS_BOOST_PP_ITERATION_DEPTH */
+#
+# define STREAMS_BOOST_PP_ITERATION_DEPTH() 0
+#
+# /* STREAMS_BOOST_PP_ITERATION */
+#
+# define STREAMS_BOOST_PP_ITERATION() STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_, STREAMS_BOOST_PP_ITERATION_DEPTH())
+#
+# /* STREAMS_BOOST_PP_ITERATION_START && STREAMS_BOOST_PP_ITERATION_FINISH */
+#
+# define STREAMS_BOOST_PP_ITERATION_START() STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_START_, STREAMS_BOOST_PP_ITERATION_DEPTH())
+# define STREAMS_BOOST_PP_ITERATION_FINISH() STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_FINISH_, STREAMS_BOOST_PP_ITERATION_DEPTH())
+#
+# /* STREAMS_BOOST_PP_ITERATION_FLAGS */
+#
+# define STREAMS_BOOST_PP_ITERATION_FLAGS() (STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_FLAGS_, STREAMS_BOOST_PP_ITERATION_DEPTH()))
+#
+# /* STREAMS_BOOST_PP_FRAME_ITERATION */
+#
+# define STREAMS_BOOST_PP_FRAME_ITERATION(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_, i)
+#
+# /* STREAMS_BOOST_PP_FRAME_START && STREAMS_BOOST_PP_FRAME_FINISH */
+#
+# define STREAMS_BOOST_PP_FRAME_START(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_START_, i)
+# define STREAMS_BOOST_PP_FRAME_FINISH(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_FINISH_, i)
+#
+# /* STREAMS_BOOST_PP_FRAME_FLAGS */
+#
+# define STREAMS_BOOST_PP_FRAME_FLAGS(i) (STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATION_FLAGS_, i))
+#
+# /* STREAMS_BOOST_PP_RELATIVE_ITERATION */
+#
+# define STREAMS_BOOST_PP_RELATIVE_ITERATION(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_RELATIVE_, i)(STREAMS_BOOST_PP_ITERATION_)
+#
+# define STREAMS_BOOST_PP_RELATIVE_0(m) STREAMS_BOOST_PP_CAT(m, STREAMS_BOOST_PP_ITERATION_DEPTH())
+# define STREAMS_BOOST_PP_RELATIVE_1(m) STREAMS_BOOST_PP_CAT(m, STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_ITERATION_DEPTH()))
+# define STREAMS_BOOST_PP_RELATIVE_2(m) STREAMS_BOOST_PP_CAT(m, STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_ITERATION_DEPTH())))
+# define STREAMS_BOOST_PP_RELATIVE_3(m) STREAMS_BOOST_PP_CAT(m, STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_ITERATION_DEPTH()))))
+# define STREAMS_BOOST_PP_RELATIVE_4(m) STREAMS_BOOST_PP_CAT(m, STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_DEC(STREAMS_BOOST_PP_ITERATION_DEPTH())))))
+#
+# /* STREAMS_BOOST_PP_RELATIVE_START && STREAMS_BOOST_PP_RELATIVE_FINISH */
+#
+# define STREAMS_BOOST_PP_RELATIVE_START(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_RELATIVE_, i)(STREAMS_BOOST_PP_ITERATION_START_)
+# define STREAMS_BOOST_PP_RELATIVE_FINISH(i) STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_RELATIVE_, i)(STREAMS_BOOST_PP_ITERATION_FINISH_)
+#
+# /* STREAMS_BOOST_PP_RELATIVE_FLAGS */
+#
+# define STREAMS_BOOST_PP_RELATIVE_FLAGS(i) (STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_RELATIVE_, i)(STREAMS_BOOST_PP_ITERATION_FLAGS_))
+#
+# /* STREAMS_BOOST_PP_ITERATE */
+#
+# define STREAMS_BOOST_PP_ITERATE() STREAMS_BOOST_PP_CAT(STREAMS_BOOST_PP_ITERATE_, STREAMS_BOOST_PP_INC(STREAMS_BOOST_PP_ITERATION_DEPTH()))
+#
+# define STREAMS_BOOST_PP_ITERATE_1 <streams_boost/preprocessor/iteration/detail/iter/forward1.hpp>
+# define STREAMS_BOOST_PP_ITERATE_2 <streams_boost/preprocessor/iteration/detail/iter/forward2.hpp>
+# define STREAMS_BOOST_PP_ITERATE_3 <streams_boost/preprocessor/iteration/detail/iter/forward3.hpp>
+# define STREAMS_BOOST_PP_ITERATE_4 <streams_boost/preprocessor/iteration/detail/iter/forward4.hpp>
+# define STREAMS_BOOST_PP_ITERATE_5 <streams_boost/preprocessor/iteration/detail/iter/forward5.hpp>
+#
+# endif

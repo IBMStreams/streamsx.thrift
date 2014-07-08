@@ -1,0 +1,44 @@
+<%
+	use ThriftSinkCommon;
+
+	my $serverHost = $model->getParameterByName('serverHost')->getValueAt(0)->getCppExpression();
+	my $serverPort = $model->getParameterByName('serverPort')->getValueAt(0)->getCppExpression();
+	my $connectionTimeoutParam = $model->getParameterByName("connectionTimeout");
+	my $connectionTimeout = (defined $connectionTimeoutParam) ? $connectionTimeoutParam->getValueAt(0)->getCppExpression() : 120000;
+	my $sendTimeoutParam = $model->getParameterByName("sendTimeout");
+	my $sendTimeout = (defined $sendTimeoutParam) ? $sendTimeoutParam->getValueAt(0)->getCppExpression() : 120000;
+
+	my $class = $model->getContext()->getClass();
+%>
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+MY_OPERATOR::MY_OPERATOR() : socket_(new TSocket(<%=$serverHost%>, <%=$serverPort%>)), transport_(new TBufferedTransport(socket_)),
+							 protocol_(new TBinaryProtocol(transport_)), client_(protocol_) {
+	socket_->setConnTimeout(<%=$connectionTimeout%>);
+	socket_->setRecvTimeout(<%=$sendTimeout%>);
+}
+
+MY_OPERATOR::~MY_OPERATOR() {}
+
+void MY_OPERATOR::allPortsReady() {
+	transport_->open();
+}
+
+void MY_OPERATOR::prepareToShutdown() {
+	transport_->close();
+}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
+	try {
+	<% ThriftSinkCommon::generateOperatorFunctionsCall($model); %>
+	} catch (TException &tx) {
+		// printf("ERROR: %s\n", tx.what());
+	}
+}
+
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port) {
+   forwardWindowPunctuation(punct);
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

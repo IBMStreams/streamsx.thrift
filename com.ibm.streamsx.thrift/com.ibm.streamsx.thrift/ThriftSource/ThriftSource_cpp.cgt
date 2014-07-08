@@ -1,0 +1,62 @@
+<%
+	my $transport = $model->getParameterByName('port')->getValueAt(0)->getCppExpression();
+	my $class = $model->getContext()->getClass();
+	my $numberOfInputPorts = $model->getNumberOfInputPorts;
+	my $lastInputPort = $numberOfInputPorts - 1;
+%>
+
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+MY_OPERATOR::MY_OPERATOR() : handler_(new <%=$class%>Handler(*this)), processor_(new <%=$class%>Processor(handler_)),
+							 serverTransport_(new TServerSocket(<%=$transport%>)), transportFactory_(new TBufferedTransportFactory()),
+							 protocolFactory_(new TBinaryProtocolFactory()), server_(processor_, serverTransport_, transportFactory_, protocolFactory_) {
+
+	<%foreach my $portIndex (0..$lastInputPort) {%>
+		ios_promise_[<%=$portIndex%>] = shared_ptr<void>(new promise<IPort<<%=$portIndex%>>::type>());
+	<%}%>
+}
+
+MY_OPERATOR::~MY_OPERATOR() {}
+
+void MY_OPERATOR::allPortsReady() {
+	createThreads(<%=$numberOfInputPorts%> + 1);
+}
+
+void MY_OPERATOR::prepareToShutdown() {
+	server_.stop();
+
+	<%foreach my $portIndex (0..$lastInputPort) {%>
+		ios_[<%=$portIndex%>].stop();
+	<%}%>
+}
+
+void MY_OPERATOR::process(uint32_t idx) {
+	if (!getPE().getShutdownRequested()) {
+		if(idx){
+		  <%if($numberOfInputPorts > 0) {%>
+			const int portIndex = idx-1;
+			io_service::work work(ios_[portIndex]);
+			ios_[portIndex].run();
+		  <%}%>
+		}
+		else {
+			server_.serve();
+		}
+	}
+}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
+  <%if($numberOfInputPorts > 0) {%>
+    try {
+		switch(port) {
+		<%foreach my $portIndex (0..$lastInputPort) {%>
+			case <%=$portIndex%>: (*static_pointer_cast<promise<IPort<<%=$portIndex%>>::type> >(ios_promise_[<%=$portIndex%>])).set_value(static_cast<const IPort<<%=$portIndex%>>::type &>(tuple));
+				break;
+		<%}%>
+		}
+    }
+    catch (...) {}
+  <%}%>
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>

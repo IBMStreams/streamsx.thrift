@@ -1,0 +1,37 @@
+// Boost.Signals library
+
+// Copyright Douglas Gregor 2001-2003. Use, modification and
+// distribution is subject to the Boost Software License, Version
+// 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.streams_boost.org/LICENSE_1_0.txt)
+
+// For more information, see http://www.streams_boost.org
+
+#ifndef STREAMS_BOOST_SIGNALS_SIGNAL1_HEADER
+#define STREAMS_BOOST_SIGNALS_SIGNAL1_HEADER
+
+#define STREAMS_BOOST_SIGNALS_NUM_ARGS 1
+#define STREAMS_BOOST_SIGNALS_TEMPLATE_PARMS typename T1
+#define STREAMS_BOOST_SIGNALS_TEMPLATE_ARGS T1
+#define STREAMS_BOOST_SIGNALS_PARMS T1 a1
+#define STREAMS_BOOST_SIGNALS_ARGS a1
+#define STREAMS_BOOST_SIGNALS_BOUND_ARGS args->a1
+#define STREAMS_BOOST_SIGNALS_ARGS_AS_MEMBERS T1 a1;
+#define STREAMS_BOOST_SIGNALS_COPY_PARMS T1 ia1
+#define STREAMS_BOOST_SIGNALS_INIT_ARGS :a1(ia1)
+#define STREAMS_BOOST_SIGNALS_ARG_TYPES typedef T1 arg1_type;
+
+#include <streams_boost/signals/signal_template.hpp>
+
+#undef STREAMS_BOOST_SIGNALS_ARG_TYPES
+#undef STREAMS_BOOST_SIGNALS_INIT_ARGS
+#undef STREAMS_BOOST_SIGNALS_COPY_PARMS
+#undef STREAMS_BOOST_SIGNALS_ARGS_AS_MEMBERS
+#undef STREAMS_BOOST_SIGNALS_BOUND_ARGS
+#undef STREAMS_BOOST_SIGNALS_ARGS
+#undef STREAMS_BOOST_SIGNALS_PARMS
+#undef STREAMS_BOOST_SIGNALS_TEMPLATE_ARGS
+#undef STREAMS_BOOST_SIGNALS_TEMPLATE_PARMS
+#undef STREAMS_BOOST_SIGNALS_NUM_ARGS
+
+#endif // STREAMS_BOOST_SIGNALS_SIGNAL1_HEADER

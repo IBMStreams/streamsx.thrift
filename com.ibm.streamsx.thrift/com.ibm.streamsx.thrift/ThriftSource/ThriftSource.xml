@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context>
+      <description>
+ThriftSource exposes a single thrift service with a number of functions defined, the number of functions is equivalent to the number of output ports.    
+The operator acts as multithreaded server and supports multiple client connections.
+
+The following mapping from SPL to thrift definitions is taking place:
+* The name of the first output port maps to the thrift service name (also to the name of the generated thrift file - e.g. ThriftSource_1.thrift).
+* Each output port schema maps to a thrift function parameters accordingly.
+* Each input port schema maps to a thrift function response accordingly.
+
+Number of input ports may vary from 0 to the number of the output ports. Each input port correlates to the corresponding output port. 
+If there are output ports that do not have a corresponding input ports, then no two-way functions are generated for them.
+If no input ports exist at all then only one-way functions are generated.
+
+Input ports defined as control and can be called from any downstream operator (to supply a response to a waiting thrift client call).
+</description>
+      <libraryDependencies>
+        <library>
+          <cmn:description></cmn:description>
+          <cmn:managedLibrary>
+            <cmn:lib>thrift</cmn:lib>
+            <cmn:lib>StreamsThrift</cmn:lib>
+            <cmn:libPath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext/lib</cmn:libPath>
+            <cmn:includePath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext</cmn:includePath>
+            <cmn:command>../../impl/bin/thrift_toolkit_path.sh</cmn:command>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      <providesSingleThreadedContext>Never</providesSingleThreadedContext>
+      <allowCustomLogic>true</allowCustomLogic>
+    </context>
+    <parameters>
+      <description></description>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>port</name>
+        <description>The mandatory 'uint32' parameter specifies thrift service listener port.</description>
+        <optional>false</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>uint32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>thriftOutputDir</name>
+        <description>The optional 'rstring' parameter specifies output directory for a generated thrift file. The default value is './etc'.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <cardinality>1</cardinality>
+      </parameter>
+    </parameters>
+    <inputPorts>
+      <inputPortOpenSet>
+        <description sampleUri="">Each input port generates a new thrift service two-way function and defines the schema of the function return value, while the function input is defined the same as a relative output port. The output tuple attributes are mapped to the function parameters accordingly. The input tuple attributes are mapped to the function response object accordingly.</description>
+        <windowingDescription></windowingDescription>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <controlPort>true</controlPort>
+      </inputPortOpenSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortOpenSet>
+        <description>Each output port generates a new thrift service one-way function and defines the schema of the function input. The output tuple attributes are mapped to the function parameters accordingly.</description>
+        <expressionMode>Expression</expressionMode>
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>false</rewriteAllowed>
+        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>-1</windowPunctuationInputPort>
+        <tupleMutationAllowed>true</tupleMutationAllowed>
+      </outputPortOpenSet>
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

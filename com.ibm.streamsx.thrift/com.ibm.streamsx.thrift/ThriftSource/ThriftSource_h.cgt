@@ -1,0 +1,112 @@
+<%
+	use ThriftSourceCommon;
+
+	ThriftSourceCommon::verifyPorts($model);
+	ThriftSourceCommon::verifySchemas($model);
+	ThriftSourceCommon::createThrift($model);
+	ThriftSourceCommon::make($model);
+
+	my $class = $model->getContext()->getClass();
+	my $numberOfInputPorts = $model->getNumberOfInputPorts;
+	my $lastInputPort = $numberOfInputPorts-1;
+
+    my @includes;
+    push @includes, "#include <iostream>";
+    push @includes, "#include <streams_boost/asio.hpp>";
+    push @includes, "#include <streams_boost/bind.hpp>";
+    push @includes, "#include <streams_boost/date_time.hpp>";
+    push @includes, "#include <streams_boost/ref.hpp>";
+    push @includes, "#include <streams_boost/shared_ptr.hpp>";
+    push @includes, "#include <streams_boost/static_assert.hpp>";
+    push @includes, "#include <streams_boost/thread.hpp>";
+    push @includes, "#include \"$class/include/$class.h\"";
+    push @includes, "#include <thrift/protocol/TBinaryProtocol.h>";
+    push @includes, "#include <thrift/server/TThreadedServer.h>";
+    push @includes, "#include <thrift/transport/TServerSocket.h>";
+    push @includes, "#include <thrift/transport/TBufferTransports.h>";
+    push @includes, "#include <SPL/Runtime/Function/StringFunctions.h>";
+%>
+
+<%SPL::CodeGen::headerPrologue($model, \@includes);%>
+
+namespace boost = streams_boost;
+
+using namespace ::apache::thrift;
+using namespace ::apache::thrift::protocol;
+using namespace ::apache::thrift::transport;
+using namespace ::apache::thrift::server;
+
+using namespace ::com::ibm::streamsx::thrift;
+
+using namespace SPL::Functions::String;
+
+using std::string;
+using streams_boost::shared_ptr;
+using streams_boost::static_pointer_cast;
+using streams_boost::asio::io_service;
+using streams_boost::bind;
+using streams_boost::posix_time::millisec;
+using streams_boost::ref;
+using streams_boost::promise;
+using streams_boost::unique_future;
+
+class <%=$class%>Handler;
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+	friend class <%=$class%>Handler;
+public:
+  MY_OPERATOR();
+  virtual ~MY_OPERATOR(); 
+
+  void allPortsReady(); 
+  void prepareToShutdown();
+
+  void process(uint32_t idx);
+  void process(Tuple const & tuple, uint32_t port);
+
+private:
+  shared_ptr<<%=$class%>Handler> handler_;
+  shared_ptr<TProcessor> processor_;
+  shared_ptr<TServerTransport> serverTransport_;
+  shared_ptr<TTransportFactory> transportFactory_;
+  shared_ptr<TProtocolFactory> protocolFactory_;
+  TThreadedServer server_;
+
+<%if($numberOfInputPorts > 0) {%>
+  template <int N>
+  struct IPort{
+  	typedef void type;;
+  };
+
+  io_service ios_[<%=$numberOfInputPorts%>];
+  shared_ptr<void> ios_promise_[<%=$numberOfInputPorts%>];
+<%}%>
+
+};
+
+<%if($numberOfInputPorts > 0) {%>
+
+<%foreach my $portIndex (0..$lastInputPort) {%>
+  template <>
+  struct MY_OPERATOR::IPort<<%=$portIndex%>>{
+	typedef MY_OPERATOR::IPort<%=$portIndex%>Type type;
+  };
+
+<%}
+}%>
+
+class <%=$class%>Handler : virtual public <%=$class%>If {
+<% ThriftSourceCommon::generateTypeDefs($model); %>
+
+ public:
+	<%=$class%>Handler(MY_OPERATOR & op) : op_(op) {}
+
+	<% ThriftSourceCommon::generateOperatorFunctions($model); %>
+
+ private:
+	MY_OPERATOR & op_;
+
+	<% ThriftSourceCommon::generateSubmitFunctions($model); %>
+};
+
+<%SPL::CodeGen::headerEpilogue($model);%>

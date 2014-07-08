@@ -1,0 +1,71 @@
+<%
+	use ThriftSinkCommon;
+
+	my $thriftOutputDirParam = $model->getParameterByName('thriftOutputDir');
+	my $thriftOutputDir = (defined $thriftOutputDirParam) ? $thriftOutputDirParam->getValueAt(0)->getCppExpression() : '../etc';
+
+	ThriftSinkCommon::verifySchemas($model);
+	ThriftSinkCommon::createThrift($model);
+	ThriftSinkCommon::make($model);
+
+	my $class = $model->getContext()->getClass();
+
+    my @includes;
+    push @includes, "#include <iostream>";
+    push @includes, "#include <boost/shared_ptr.hpp>";
+    push @includes, "#include <streams_boost/asio.hpp>";
+    push @includes, "#include <streams_boost/bind.hpp>";
+    push @includes, "#include <streams_boost/date_time.hpp>";
+    push @includes, "#include <streams_boost/ref.hpp>";
+    push @includes, "#include <streams_boost/thread.hpp>";
+    push @includes, "#include \"$class/include/$class.h\"";
+    push @includes, "#include <thrift/protocol/TBinaryProtocol.h>";
+    push @includes, "#include <thrift/transport/TSocket.h>";
+    push @includes, "#include <thrift/transport/TTransportUtils.h>";
+    push @includes, "#include <SPL/Runtime/Function/StringFunctions.h>";
+%>
+
+<%SPL::CodeGen::headerPrologue($model, \@includes);%>
+
+using namespace ::apache::thrift;
+using namespace ::apache::thrift::protocol;
+using namespace ::apache::thrift::transport;
+
+using namespace ::com::ibm::streamsx::thrift;
+
+using namespace SPL::Functions::String;
+
+using std::string;
+using boost::shared_ptr;
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+public:
+  MY_OPERATOR();
+  virtual ~MY_OPERATOR(); 
+
+  void allPortsReady(); 
+  void prepareToShutdown(); 
+
+  void process(Tuple const & tuple, uint32_t port);
+  void process(Punctuation const & punct, uint32_t port);
+
+private:
+  <% ThriftSinkCommon::generateTypeDefs($model); %>
+  shared_ptr<TSocket> socket_;
+  shared_ptr<TTransport> transport_;
+  shared_ptr<TProtocol> protocol_;
+  <%=$class%>Client client_;
+
+  template <int N>
+  struct IPort{
+  	typedef void type;;
+  };
+
+}; 
+
+template <>
+struct MY_OPERATOR::IPort<0>{
+typedef MY_OPERATOR::IPort0Type type;
+};
+
+<%SPL::CodeGen::headerEpilogue($model);%>

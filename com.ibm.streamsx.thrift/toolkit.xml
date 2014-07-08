@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="3.2.1.1" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="com.ibm.streamsx.thrift" requiredProductVersion="3.1.0" version="1.0.0">
+    <description>
+Support for [http://thrift.apache.org|thrift] protocol.
+
+This toolkit provides thrift server and thrift client functionality.
+Thrift idl file and thrift c++ code are generated automatically based on SPL type definitions.
+
+The toolkit supports operator port schemas with basic types as well as collections of basic types.
+
+Below a table of the supported basic types:
+
+	thrift	SPL
+	
+	binary	blob
+	bool	boolean
+	byte	int8
+	i16	int16
+	i32	int32
+	i64	int64
+	double	float64
+	string	rstring
+
+**Third-party libraries**
+* This toolkit embeds thrift headers/binaries under impl/include|lib|bin.
+    </description>
+    <uriTable>
+      <uri index="2" value="com.ibm.streamsx.thrift/ThriftSink"/>
+      <uri index="3" value="com.ibm.streamsx.thrift/ThriftCall"/>
+      <uri index="1" value="com.ibm.streamsx.thrift/ThriftSource"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.thrift">
+      <primitiveOp language="Cpp" modelUriIndex="1" name="ThriftSource" public="true">
+        <description>
+ThriftSource exposes a single thrift service with a number of functions defined, the number of functions is equivalent to the number of output ports.    
+The operator acts as multithreaded server and supports multiple client connections.
+
+The following mapping from SPL to thrift definitions is taking place:
+* The name of the first output port maps to the thrift service name (also to the name of the generated thrift file - e.g. ThriftSource_1.thrift).
+* Each output port schema maps to a thrift function parameters accordingly.
+* Each input port schema maps to a thrift function response accordingly.
+
+Number of input ports may vary from 0 to the number of the output ports. Each input port correlates to the corresponding output port. 
+If there are output ports that do not have a corresponding input ports, then no two-way functions are generated for them.
+If no input ports exist at all then only one-way functions are generated.
+
+Input ports defined as control and can be called from any downstream operator (to supply a response to a waiting thrift client call).
+</description>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Expression" name="port" optional="false" type="uint32">
+          <description>The mandatory 'uint32' parameter specifies thrift service listener port.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="thriftOutputDir" optional="true">
+          <description>The optional 'rstring' parameter specifies output directory for a generated thrift file. The default value is './etc'.</description>
+        </parameter>
+        <inputPort minNumPorts="0" optional="true" windowPunctInputMode="Oblivious">
+          <description sampleUri="">Each input port generates a new thrift service two-way function and defines the schema of the function return value, while the function input is defined the same as a relative output port. The output tuple attributes are mapped to the function parameters accordingly. The input tuple attributes are mapped to the function response object accordingly.</description>
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="Expression" minNumPorts="0" optional="true" windowPunctOutputMode="Generating">
+          <description>Each output port generates a new thrift service one-way function and defines the schema of the function input. The output tuple attributes are mapped to the function parameters accordingly.</description>
+        </outputPort>
+      </primitiveOp>
+      <primitiveOp language="Cpp" modelUriIndex="2" name="ThriftSink" public="true">
+        <description>
+ThriftSink defines an external thrift service with a single one-way function call. 
+The operator acts as a single connection thrift client.
+
+The following mapping from SPL to thrift definitions is taking place:
+* The name of the output port maps to the thrift service name (also to the name of the generated thrift file - e.g. ThriftSink_1.thrift).
+* The input port schema maps to a thrift function parameters accordingly.
+
+Only one input port is supported.
+The generated thrift function is always one-way.
+</description>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Expression" name="serverHost" optional="false" type="rstring">
+          <description>The mandatory 'rstring' parameter specifies thrift server host to connect.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="serverPort" optional="false" type="uint32">
+          <description>The mandatory 'uint32' parameter specifies thrift server port to connect.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="connectionTimeout" optional="true" type="float64">
+          <description>The optional 'float64' parameter specifies connection timeout in seconds. The default value is 120.0.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="sendTimeout" optional="true" type="float64">
+          <description>The optional 'float64' parameter specifies send timeout in seconds. The default value is 120.0.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="thriftOutputDir" optional="true">
+          <description>The optional 'rstring' parameter specifies output directory for a generated thrift file. The default value is './etc'.</description>
+        </parameter>
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
+          <description>The input port defines the schema of thrift function input. The input tuple attributes are mapped to the function parameters accordingly.</description>
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+      </primitiveOp>
+      <primitiveOp language="Cpp" modelUriIndex="3" name="ThriftCall" public="true">
+        <description>
+ThriftCall defines an external thrift service with a single two-way function call. 
+The operator acts as a single connection thrift client.
+
+The following mapping from SPL to thrift definitions is taking place:
+* The name of the output port maps to the thrift service name (also to the name of the generated thrift file - e.g. ThriftCall_1.thrift).
+* The input port schema maps to a thrift function parameters accordingly.
+* The output port schema maps to a thrift function response accordingly.
+
+Only one input/output ports are supported.
+The generated thrift function is always two-way.
+</description>
+        <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Expression" name="serverHost" optional="false" type="rstring">
+          <description>The mandatory 'rstring' parameter specifies thrift server host to connect.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="serverPort" optional="false" type="uint32">
+          <description>The mandatory 'uint32' parameter specifies thrift server port to connect.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="connectionTimeout" optional="true" type="float64">
+          <description>The optional 'float64' parameter specifies connection timeout in seconds. The default value is 120.0.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="sendTimeout" optional="true" type="float64">
+          <description>The optional 'float64' parameter specifies send timeout in seconds. The default value is 120.0.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="receiveTimeout" optional="true" type="float64">
+          <description>The optional 'float64' parameter specifies response timeout in seconds. The default value is 120.0.</description>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Expression" name="thriftOutputDir" optional="true">
+          <description>The optional 'rstring' parameter specifies output directory for a generated thrift file. The default value is './etc'.</description>
+        </parameter>
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
+          <description>The input port defines the schema of thrift function input. The input tuple attributes are mapped to the function parameters accordingly.</description>
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Generating">
+          <description>The output port defines the schema of thrift function return value. The output tuple attributes are mapped to the function response object accordingly.</description>
+        </outputPort>
+      </primitiveOp>
+    </namespace>
+  </toolkit>
+
+</toolkitModel>

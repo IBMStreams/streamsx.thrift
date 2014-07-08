@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context>
+      <description>
+ThriftCall defines an external thrift service with a single two-way function call. 
+The operator acts as a single connection thrift client.
+
+The following mapping from SPL to thrift definitions is taking place:
+* The name of the output port maps to the thrift service name (also to the name of the generated thrift file - e.g. ThriftCall_1.thrift).
+* The input port schema maps to a thrift function parameters accordingly.
+* The output port schema maps to a thrift function response accordingly.
+
+Only one input/output ports are supported.
+The generated thrift function is always two-way.
+</description>
+      <libraryDependencies>
+        <library>
+          <cmn:description></cmn:description>
+          <cmn:managedLibrary>
+            <cmn:lib>thrift</cmn:lib>
+            <cmn:lib>StreamsThrift</cmn:lib>
+            <cmn:libPath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext/lib</cmn:libPath>
+            <cmn:includePath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext</cmn:includePath>
+            <cmn:command>../../impl/bin/thrift_toolkit_path.sh</cmn:command>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      <providesSingleThreadedContext>Always</providesSingleThreadedContext>
+      <allowCustomLogic>false</allowCustomLogic>
+    </context>
+    <parameters>
+      <description></description>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>serverHost</name>
+        <description>The mandatory 'rstring' parameter specifies thrift server host to connect.</description>
+        <optional>false</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>serverPort</name>
+        <description>The mandatory 'uint32' parameter specifies thrift server port to connect.</description>
+        <optional>false</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>uint32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>connectionTimeout</name>
+        <description>The optional 'float64' parameter specifies connection timeout in seconds. The default value is 120.0.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>float64</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>sendTimeout</name>
+        <description>The optional 'float64' parameter specifies send timeout in seconds. The default value is 120.0.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>float64</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>receiveTimeout</name>
+        <description>The optional 'float64' parameter specifies response timeout in seconds. The default value is 120.0.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <type>float64</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>thriftOutputDir</name>
+        <description>The optional 'rstring' parameter specifies output directory for a generated thrift file. The default value is './etc'.</description>
+        <optional>true</optional>
+        <rewriteAllowed>true</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <cardinality>1</cardinality>
+      </parameter>
+    </parameters>
+    <inputPorts>
+      <inputPortSet>
+        <description>The input port defines the schema of thrift function input. The input tuple attributes are mapped to the function parameters accordingly.</description>
+        <windowingDescription></windowingDescription>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortSet>
+        <description>The output port defines the schema of thrift function return value. The output tuple attributes are mapped to the function response object accordingly.</description>
+        <expressionMode>Expression</expressionMode>
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>false</rewriteAllowed>
+        <windowPunctuationOutputMode>Generating</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>-1</windowPunctuationInputPort>
+        <tupleMutationAllowed>true</tupleMutationAllowed>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

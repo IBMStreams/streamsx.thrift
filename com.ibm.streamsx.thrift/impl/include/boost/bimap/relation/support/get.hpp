@@ -1,0 +1,140 @@
+// Boost.Bimap
+//
+// Copyright (c) 2006-2007 Matias Capeletto
+//
+// Distributed under the Boost Software License, Version 1.0.
+// (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.streams_boost.org/LICENSE_1_0.txt)
+
+/// \file relation/support/get.hpp
+/// \brief get<tag>(r) function
+
+#ifndef STREAMS_BOOST_BIMAP_RELATION_SUPPORT_GET_HPP
+#define STREAMS_BOOST_BIMAP_RELATION_SUPPORT_GET_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER>=1200)
+#pragma once
+#endif
+
+#include <streams_boost/config.hpp>
+
+#include <streams_boost/bimap/relation/support/value_type_of.hpp>
+
+#include <streams_boost/bimap/relation/detail/access_builder.hpp>
+
+#include <streams_boost/mpl/if.hpp>
+#include <streams_boost/type_traits/is_same.hpp>
+#include <streams_boost/type_traits/is_const.hpp>
+
+#ifdef STREAMS_BOOST_BIMAP_ONLY_DOXYGEN_WILL_PROCESS_THE_FOLLOWING_LINES
+
+
+namespace streams_boost {
+namespace bimaps {
+namespace relation {
+namespace support {
+
+/** \brief Gets a pair view of the relation.
+
+\ingroup relation_group
+                                                                        **/
+
+template< class Tag, class SymmetricType >
+STREAMS_BOOST_DEDUCED_TYPENAME result_of::get<Tag,SymmetricType>::type
+    get( SymmetricType & );
+
+} // namespace support
+} // namespace relation
+} // namespace bimaps
+} // namespace streams_boost
+
+#endif // STREAMS_BOOST_BIMAP_ONLY_DOXYGEN_WILL_PROCESS_THE_FOLLOWING_LINES
+
+
+
+#ifndef STREAMS_BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
+namespace streams_boost {
+namespace bimaps {
+namespace relation {
+namespace support {
+
+// Since it is very error-prone to directly write the hole bunch
+// of relation accesor. They are buil from litle macro blocks that
+// are both more readable, leading to self docummenting code and a
+// lot more easier to understand and mantain.
+// It is very important to note that the three building blocks have
+// to laid in the same namespace in order to work. There is also
+// important to keep them in order.
+// The forward declaration are not necesary but they help a lot to
+// the reader, as they undercover what is the signature of the
+// result code.
+// In the end, it is not quicker to do it in this way because you
+// write a lot. But this code has no complexity at all and almost
+// every word writed is for documentation.
+
+// Result of
+// -------------------------------------------------------------------------
+/*
+    namespace result_of {
+
+    template< class Tag, class Relation >
+    struct get<Tag,Relation>;
+    {
+        typedef -unspecified- type;
+    };
+
+    } // namespace result_of
+
+*/
+
+STREAMS_BOOST_BIMAP_SYMMETRIC_ACCESS_RESULT_OF_BUILDER
+(
+    get,
+    value_type_of
+)
+
+
+
+// Implementation
+// -------------------------------------------------------------------------
+
+STREAMS_BOOST_BIMAP_SYMMETRIC_ACCESS_IMPLEMENTATION_BUILDER
+(
+    get,
+    SymmetricType,
+    st,
+    return st.get_left(),
+    return st.get_right()
+)
+
+namespace detail {
+
+template< class SymmetricType >
+STREAMS_BOOST_DEDUCED_TYPENAME result_of::get<
+    ::streams_boost::bimaps::relation::member_at::info, SymmetricType >::type
+get(::streams_boost::bimaps::relation::member_at::info, SymmetricType & rel)
+{
+    return rel.info;
+}
+
+} // namespace detail
+
+// Interface
+//----------------------------------------------------------------------------
+
+STREAMS_BOOST_BIMAP_SYMMETRIC_ACCESS_INTERFACE_BUILDER
+(
+    get
+)
+
+
+} // namespace support
+} // namespace relation
+} // namespace bimaps
+} // namespace streams_boost
+
+#endif // STREAMS_BOOST_BIMAP_DOXYGEN_WILL_NOT_PROCESS_THE_FOLLOWING_LINES
+
+#endif // STREAMS_BOOST_BIMAP_RELATION_SUPPORT_GET_HPP
+

@@ -1,0 +1,43 @@
+//  (C) Copyright John Maddock 2005.
+//  Use, modification and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
+//  LICENSE_1_0.txt or copy at http://www.streams_boost.org/LICENSE_1_0.txt)
+
+
+#include <streams_boost/tr1/detail/config_all.hpp>
+
+#if (!defined(STREAMS_BOOST_TR1_TYPE_TRAITS_INCLUDED) || defined(STREAMS_BOOST_TR1_NO_RECURSION)) && defined(STREAMS_BOOST_HAS_CPP_0X)
+#ifndef STREAMS_BOOST_TR1_TYPE_TRAITS_INCLUDED
+#  define STREAMS_BOOST_TR1_TYPE_TRAITS_INCLUDED
+#endif
+#  ifdef STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION2
+#     define STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION3
+#  elif defined(STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION)
+#     define STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION2
+#  elif !defined(STREAMS_BOOST_TR1_NO_RECURSION)
+#     define STREAMS_BOOST_TR1_NO_RECURSION
+#     define STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION
+#  endif
+#  ifdef STREAMS_BOOST_HAS_INCLUDE_NEXT
+#     include_next <type_traits>
+#  else
+#     include STREAMS_BOOST_TR1_STD_HEADER(type_traits)
+#  endif
+#ifdef STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION3
+#  undef STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION3
+#elif defined(STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION2)
+#  undef STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION2
+#elif defined(STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION)
+#     undef STREAMS_BOOST_TR1_NO_RECURSION
+#     undef STREAMS_BOOST_TR1_NO_TYPE_TRAITS_RECURSION
+#  endif
+#endif
+
+#if !defined(STREAMS_BOOST_TR1_FULL_TYPE_TRAITS_INCLUDED) && !defined(STREAMS_BOOST_TR1_NO_RECURSION)
+#  define STREAMS_BOOST_TR1_FULL_TYPE_TRAITS_INCLUDED
+#  define STREAMS_BOOST_TR1_NO_RECURSION
+#  include <streams_boost/tr1/type_traits.hpp>
+#  undef STREAMS_BOOST_TR1_NO_RECURSION
+#endif
+
+

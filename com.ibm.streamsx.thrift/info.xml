@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common"
+ xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
+ <info:identity>
+   <info:name>com.ibm.streamsx.thrift</info:name>
+    <info:description>
+Support for [http://thrift.apache.org|thrift] protocol.
+
+This toolkit provides thrift server and thrift client functionality.
+Thrift idl file and thrift c++ code are generated automatically based on SPL type definitions.
+
+The toolkit supports operator port schemas with basic types as well as collections of basic types.
+
+Below a table of the supported basic types:
+
+	thrift	SPL
+	
+	binary	blob
+	bool	boolean
+	byte	int8
+	i16	int16
+	i32	int32
+	i64	int64
+	double	float64
+	string	rstring
+
+**Third-party libraries**
+* This toolkit embeds thrift headers/binaries under impl/include|lib|bin.
+    </info:description>
+   <info:version>1.0.0</info:version>
+   <info:requiredProductVersion>3.1.0</info:requiredProductVersion>
+ </info:identity>
+ <info:dependencies/>
+</info:toolkitInfoModel>
