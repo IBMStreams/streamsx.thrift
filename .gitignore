@@ -6,6 +6,7 @@ com.ibm.streamsx.thrift/samples
 samples/*/output
 samples/*/toolkit.xml
 /samples/*/doc
+index.*
 
 # begin streamsx.thrift excluded
 .settings

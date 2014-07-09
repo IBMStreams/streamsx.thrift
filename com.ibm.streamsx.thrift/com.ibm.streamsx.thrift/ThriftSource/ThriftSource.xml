@@ -21,7 +21,7 @@ Input ports defined as control and can be called from any downstream operator (t
         <library>
           <cmn:description></cmn:description>
           <cmn:managedLibrary>
-            <cmn:lib>thrift</cmn:lib>
+            <cmn:lib>thrift-0.9.0</cmn:lib>
             <cmn:lib>StreamsThrift</cmn:lib>
             <cmn:libPath>../../impl/lib</cmn:libPath>
             <cmn:libPath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext/lib</cmn:libPath>
