@@ -10,7 +10,6 @@ samples/*/toolkit.xml
 # begin streamsx.thrift excluded
 .settings
 .toolkitList
-.namespace
 
 ## C++ excludes
 # Compiled Object files
