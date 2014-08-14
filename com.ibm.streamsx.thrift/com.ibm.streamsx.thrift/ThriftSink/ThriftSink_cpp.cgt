@@ -3,10 +3,8 @@
 
 	my $serverHost = $model->getParameterByName('serverHost')->getValueAt(0)->getCppExpression();
 	my $serverPort = $model->getParameterByName('serverPort')->getValueAt(0)->getCppExpression();
-	my $connectionTimeoutParam = $model->getParameterByName("connectionTimeout");
-	my $connectionTimeout = (defined $connectionTimeoutParam) ? $connectionTimeoutParam->getValueAt(0)->getCppExpression() : 120000;
-	my $sendTimeoutParam = $model->getParameterByName("sendTimeout");
-	my $sendTimeout = (defined $sendTimeoutParam) ? $sendTimeoutParam->getValueAt(0)->getCppExpression() : 120000;
+	my $connectionTimeout = ($_ = $model->getParameterByName('connectionTimeout')) ? $_->getValueAt(0)->getCppExpression() : 120.0;
+	my $sendTimeout = ($_ = $model->getParameterByName('sendTimeout')) ? $_->getValueAt(0)->getCppExpression() : 120.0;
 
 	my $class = $model->getContext()->getClass();
 %>
@@ -15,8 +13,8 @@
 
 MY_OPERATOR::MY_OPERATOR() : socket_(new TSocket(<%=$serverHost%>, <%=$serverPort%>)), transport_(new TBufferedTransport(socket_)),
 							 protocol_(new TBinaryProtocol(transport_)), client_(protocol_) {
-	socket_->setConnTimeout(<%=$connectionTimeout%>);
-	socket_->setRecvTimeout(<%=$sendTimeout%>);
+	socket_->setConnTimeout((uint64)<%=$connectionTimeout%> * 1000);
+	socket_->setSendTimeout((uint64)<%=$sendTimeout%> * 1000);
 }
 
 MY_OPERATOR::~MY_OPERATOR() {}
