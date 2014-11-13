@@ -25,7 +25,7 @@ Below a table of the supported basic types:
 	string	rstring
 
 **Third-party libraries**
-* This toolkit embeds thrift headers/binaries under impl/include|lib|bin.
+* This toolkit embeds thrift headers/binaries under impl/&lt;include|lib|bin&gt;.
     </info:description>
    <info:version>1.0.0</info:version>
    <info:requiredProductVersion>3.1.0</info:requiredProductVersion>
