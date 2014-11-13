@@ -6,3 +6,5 @@ Web page with SPLDoc for operators and samples: [streamsx.thrift SPLDoc](http://
 Setup
 -----
 The toolkit needs write permissions for SPL developer.
+
+Each Thrift operator generates .thrift definition file (by default in ./etc directory).
