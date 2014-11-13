@@ -1,0 +1,58 @@
+namespace sample ;
+
+use com.ibm.streamsx.thrift::ThriftSource ;
+
+/**
+* This sample uses Beacon to update the state map with new values and ThriftSource to return it to the thrift client.
+* 
+* The stream performs the following steps:
+* * Beacon outputs periodically some key with a timestamp.
+* * These values are added to the state map held by Custom operator.
+* * ThriftSource listens on port 5656 waiting for a thrift client to call.
+* * On each call the Custom operator will return the state map to the ThriftSource control port and then back to the client.
+* 
+*/
+composite GetCurrentStateSample {
+	type
+		StateMap_t = map<int32,rstring>;
+	graph
+		(stream<boolean request> ThriftSource_1_out0)as ThriftSource_1 =
+			ThriftSource(Custom_3_out0){
+			param
+				port : 5656u ;
+		}
+
+		(stream<int32 key, rstring value> Beacon_2_out0)as Beacon_2 = Beacon(){
+			param
+				iterations : 20u;
+				period : 10.0;
+			output Beacon_2_out0 :
+				key = (int32)IterationCount(),
+				value = ctime(getTimestamp());
+		}
+
+		(stream<StateMap_t result> Custom_3_out0)as Custom_3 = Custom(Beacon_2_out0 ;
+			ThriftSource_1_out0){
+			logic
+				state : {
+					mutable StateMap_t stateMap = { } ;
+				}
+
+				onTuple Beacon_2_out0 : {
+					stateMap [ key ] = value ;
+				}
+
+				onTuple ThriftSource_1_out0 : {
+					if(request){
+						submit({result = stateMap}, Custom_3_out0);
+					}
+					else {
+						printStringLn("Tuple with request = false is ignored.");
+					}
+
+				}
+
+		}
+
+}
+

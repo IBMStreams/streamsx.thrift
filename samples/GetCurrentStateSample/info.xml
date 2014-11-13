@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
+  <info:identity>
+    <info:name>streamsx.thrift.GetCurrentStateSample</info:name>
+    <info:description>
+Sample use of ThriftSource operator.
+
+The sample comes with generated C sharp, Java and Perl sources.
+
+To produce the new source in any language supported by thrift, use the thrift utility found in toolkit's impl/bin directory.
+
+Also thripse eclipse plugin is recommended to run thrift utility with UI.
+	</info:description>
+    <info:version>1.0.0</info:version>
+    <info:requiredProductVersion>3.2.1.0</info:requiredProductVersion>
+  </info:identity>
+  <info:dependencies>
+    <info:toolkit>
+      <common:name>com.ibm.streamsx.thrift</common:name>
+      <common:version>1.0.0</common:version>
+    </info:toolkit>
+  </info:dependencies>
+</info:toolkitInfoModel>
