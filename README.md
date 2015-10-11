@@ -1,5 +1,7 @@
 streamsx.thrift
 ===============
+Support for Streams 4.0 Now Available!
+
 This toolkit provides [thrift](http://thrift.apache.org) server and client functionality.
 Web page with SPLDoc for operators and samples: [streamsx.thrift SPLDoc](http://ibmstreams.github.io/streamsx.thrift).
 
