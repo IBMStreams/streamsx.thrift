@@ -17,28 +17,39 @@
  * under the License.
  */
 
-#ifndef _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_
-#define _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_ 1
-
 #include <thrift/thrift-config.h>
-#if USE_BOOST_THREAD
-#  include <thrift/concurrency/BoostThreadFactory.h>
-#elif USE_STD_THREAD
-#  include <thrift/concurrency/StdThreadFactory.h>
-#else
-#  include <thrift/concurrency/PosixThreadFactory.h>
-#endif
+
+#include <thrift/concurrency/Mutex.h>
+#include <thrift/concurrency/Util.h>
+
+#include <cassert>
+#include <chrono>
+#include <mutex>
 
 namespace apache { namespace thrift { namespace concurrency {
 
-#ifdef USE_BOOST_THREAD
-  typedef BoostThreadFactory PlatformThreadFactory;
-#elif USE_STD_THREAD
-  typedef StdThreadFactory PlatformThreadFactory;
-#else
-  typedef PosixThreadFactory PlatformThreadFactory;
-#endif
+/**
+ * Implementation of Mutex class using C++11 std::timed_mutex
+ *
+ * @version $Id:$
+ */
+class Mutex::impl : public std::timed_mutex {
+};
+
+Mutex::Mutex(Initializer init) : impl_(new Mutex::impl()) {}
+
+void* Mutex::getUnderlyingImpl() const { return impl_.get(); }
+
+void Mutex::lock() const { impl_->lock(); }
+
+bool Mutex::trylock() const { return impl_->try_lock(); }
+
+bool Mutex::timedlock(int64_t ms) const { return impl_->try_lock_for(std::chrono::milliseconds(ms)); }
+
+void Mutex::unlock() const { impl_->unlock(); }
+
+void Mutex::DEFAULT_INITIALIZER(void* arg) {
+}
 
 }}} // apache::thrift::concurrency
 
-#endif // #ifndef _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_

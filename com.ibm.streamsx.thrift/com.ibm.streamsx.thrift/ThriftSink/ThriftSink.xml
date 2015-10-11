@@ -17,7 +17,7 @@ The generated thrift function is always one-way.
         <library>
           <cmn:description></cmn:description>
           <cmn:managedLibrary>
-            <cmn:lib>thrift-0.9.0</cmn:lib>
+            <cmn:lib>thrift-0.9.2</cmn:lib>
             <cmn:lib>StreamsThrift</cmn:lib>
             <cmn:libPath>../../impl/lib</cmn:libPath>
             <cmn:libPath>@STREAMS_STUDIO_OUTPUT_DIRECTORY@/ext/lib</cmn:libPath>

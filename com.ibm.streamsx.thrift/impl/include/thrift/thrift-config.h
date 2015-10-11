@@ -17,28 +17,8 @@
  * under the License.
  */
 
-#ifndef _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_
-#define _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_ 1
-
-#include <thrift/thrift-config.h>
-#if USE_BOOST_THREAD
-#  include <thrift/concurrency/BoostThreadFactory.h>
-#elif USE_STD_THREAD
-#  include <thrift/concurrency/StdThreadFactory.h>
+#ifdef _WIN32
+# include <thrift/windows/config.h>
 #else
-#  include <thrift/concurrency/PosixThreadFactory.h>
+# include <thrift/config.h>
 #endif
-
-namespace apache { namespace thrift { namespace concurrency {
-
-#ifdef USE_BOOST_THREAD
-  typedef BoostThreadFactory PlatformThreadFactory;
-#elif USE_STD_THREAD
-  typedef StdThreadFactory PlatformThreadFactory;
-#else
-  typedef PosixThreadFactory PlatformThreadFactory;
-#endif
-
-}}} // apache::thrift::concurrency
-
-#endif // #ifndef _THRIFT_CONCURRENCY_PLATFORMTHREADFACTORY_H_
