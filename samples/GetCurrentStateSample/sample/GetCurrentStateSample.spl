@@ -16,23 +16,21 @@ composite GetCurrentStateSample {
 	type
 		StateMap_t = map<int32,rstring>;
 	graph
-		(stream<boolean request> ThriftSource_1_out0)as ThriftSource_1 =
-			ThriftSource(Custom_3_out0){
+		(stream<boolean request> ThriftSource_1_out0)as ThriftSource_1 = ThriftSource(Custom_3_out0) {
 			param
 				port : 5656u ;
 		}
 
-		(stream<int32 key, rstring value> Beacon_2_out0)as Beacon_2 = Beacon(){
+		(stream<int32 key, rstring value> Beacon_2_out0)as Beacon_2 = Beacon() {
 			param
-				iterations : 20u;
+				iterations : 100u;
 				period : 10.0;
 			output Beacon_2_out0 :
 				key = (int32)IterationCount(),
 				value = ctime(getTimestamp());
 		}
 
-		(stream<StateMap_t result> Custom_3_out0)as Custom_3 = Custom(Beacon_2_out0 ;
-			ThriftSource_1_out0){
+		(stream<StateMap_t result> Custom_3_out0)as Custom_3 = Custom(Beacon_2_out0 ; ThriftSource_1_out0) {
 			logic
 				state : {
 					mutable StateMap_t stateMap = { } ;
@@ -55,4 +53,3 @@ composite GetCurrentStateSample {
 		}
 
 }
-

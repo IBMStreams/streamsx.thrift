@@ -1,3 +1,5 @@
+import java.util.Map;
+
 import com.ibm.streamsx.thrift.*;
 
 import org.apache.thrift.TException;
@@ -19,7 +21,8 @@ public class GetCurrentStateSample {
       TProtocol protocol = new TBinaryProtocol(transport);
       ThriftSource_1.Client client = new ThriftSource_1.Client(protocol);
 
-      perform(client);
+      sendAsync(client);
+      sendSync(client);
 
       transport.close();
   } catch (TException x) {
@@ -27,9 +30,14 @@ public class GetCurrentStateSample {
   } 
   }
 
-  private static void perform(ThriftSource_1.Client client) throws TException
-  {
+  private static void sendAsync(ThriftSource_1.Client client) throws TException {
     client.sendAsync_0(false);
     System.out.println("Request false is sent.");
+  }
+  
+  private static void sendSync(ThriftSource_1.Client client) throws TException {
+	  SendResponse_0 resp = client.sendSync_0(true);
+	  Map<Integer,String> data = resp.getResult();
+	  System.out.println(data);
   }
 }
