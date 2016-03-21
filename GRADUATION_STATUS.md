@@ -11,7 +11,7 @@ Incubation for projects is covered here: https://github.com/IBMStreams/administr
 - [ ] :large_orange_diamond: Project is properly documented
   * Status: SPLDOC needs update
 - [ ] :large_orange_diamond: Project has samples and instructions to help users get started easily
-  * Status: Smaples exist, but more samples and instructions needed
+  * Status: Samples exist, but more samples and instructions needed
 - [ ] :large_orange_diamond: Sufficient testing
   * Status: Needs more testing
 - [ ] :red_circle: Instructions on how to get started with development and contributing to project
