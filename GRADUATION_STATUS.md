@@ -20,7 +20,7 @@ Incubation for projects is covered here: https://github.com/IBMStreams/administr
   * Status: Yes
 - [ ] :red_circle: Clear release plan
   * Status: **TBD**
-- [ ] :red_circle: At least one active committer
+- [ ] :white_check_mark: At least one active committer
   * Status: one active committer: Leonid Gorelik
 
 ### Key
